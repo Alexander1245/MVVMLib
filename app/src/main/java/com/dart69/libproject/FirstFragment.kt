@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.dart69.coroutines.flows.MutableDebouncedFlow
 import com.dart69.libproject.databinding.FragmentFirstBinding
+import com.dart69.mvvm_core.viewmodels.BaseViewModel
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -23,7 +25,6 @@ class FirstFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
         return binding.root
 
