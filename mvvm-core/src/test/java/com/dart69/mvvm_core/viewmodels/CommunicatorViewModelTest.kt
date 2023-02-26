@@ -1,6 +1,8 @@
 package com.dart69.mvvm_core.viewmodels
 
 import androidx.lifecycle.viewModelScope
+import com.dart69.mvvm_core.presentation.viewmodels.CommunicatorViewModel
+import com.dart69.mvvm_core.presentation.viewmodels.UiEvent
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.update

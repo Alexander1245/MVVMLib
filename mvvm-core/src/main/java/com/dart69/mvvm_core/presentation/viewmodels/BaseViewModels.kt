@@ -1,4 +1,4 @@
-package com.dart69.mvvm_core.viewmodels
+package com.dart69.mvvm_core.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.channels.Channel
