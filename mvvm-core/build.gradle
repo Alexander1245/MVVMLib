@@ -46,6 +46,7 @@ android {
 dependencies {
     def COROUTINES_VERSION = "1.6.4"
     def UI_KTX = "1.8.0"
+    def LIB_VERSION = rootProject.version
 
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
@@ -62,6 +63,8 @@ dependencies {
     implementation "com.google.android.material:material:$UI_KTX"
 
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
+
+    implementation "com.github.Alexander1245.MVVMLib:coroutines:$LIB_VERSION"
 }
 
 afterEvaluate {
