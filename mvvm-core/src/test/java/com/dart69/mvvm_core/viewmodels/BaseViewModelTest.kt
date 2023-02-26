@@ -1,5 +1,7 @@
 package com.dart69.mvvm_core.viewmodels
 
+import com.dart69.mvvm_core.presentation.viewmodels.BaseViewModel
+import com.dart69.mvvm_core.presentation.viewmodels.UiState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.update
