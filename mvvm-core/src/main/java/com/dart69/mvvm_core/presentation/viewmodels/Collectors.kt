@@ -1,15 +1,15 @@
 package com.dart69.mvvm_core.presentation.viewmodels
 
-import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.flow.Flow
 
 interface UiState
 
-interface UiStateCollector<T : UiState> {
-    suspend fun collectUiStates(collector: FlowCollector<T>)
+interface UiStateObserver<T : UiState> {
+    suspend fun observeUiStates(): Flow<T>
 }
 
 interface UiEvent
 
-interface UiEventCollector<T : UiEvent> {
-    suspend fun collectUiEvents(collector: FlowCollector<T>)
+interface UiEventObserver<T : UiEvent> {
+    suspend fun observeUiEvents(): Flow<T>
 }
