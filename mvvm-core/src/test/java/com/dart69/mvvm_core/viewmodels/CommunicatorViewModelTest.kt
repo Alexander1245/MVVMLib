@@ -5,6 +5,7 @@ import com.dart69.mvvm_core.presentation.viewmodels.CommunicatorViewModel
 import com.dart69.mvvm_core.presentation.viewmodels.UiEvent
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import org.junit.Assert
@@ -16,7 +17,7 @@ internal data class FakeUiEvent(
 ) : UiEvent
 
 internal class FakeCommunicatorViewModel :
-    CommunicatorViewModel<FakeUiState, FakeUiEvent>(FakeUiState.INITIAL) {
+    CommunicatorViewModel.Default<FakeUiState, FakeUiEvent>(FakeUiState.INITIAL) {
     fun updateTitle(newTitle: String) {
         uiStates.update { it.copy(title = newTitle) }
     }
@@ -44,9 +45,8 @@ internal class CommunicatorViewModelTest {
         val expected = FakeUiEvent(message)
         val actual = mutableListOf<FakeUiEvent>()
         val job = launch(UnconfinedTestDispatcher()) {
-            viewModel.collectUiEvents {
+            viewModel.observeUiEvents().take(1).collect {
                 actual += it
-                if (actual.size == 1) cancel()
             }
         }
         viewModel.sendMessage(message)
@@ -60,11 +60,8 @@ internal class CommunicatorViewModelTest {
         val expected = listOf(FakeUiState.INITIAL, FakeUiState.INITIAL.copy(title = newTitle))
         val actual = mutableListOf<FakeUiState>()
         val job = launch(UnconfinedTestDispatcher()) {
-            viewModel.collectUiStates {
+            viewModel.observeUiStates().take(expected.size).collect {
                 actual += it
-                if (actual.size == expected.size) {
-                    cancel()
-                }
             }
         }
         viewModel.updateTitle(newTitle)

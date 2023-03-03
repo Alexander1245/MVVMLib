@@ -3,7 +3,7 @@ package com.dart69.mvvm_core.viewmodels
 import com.dart69.mvvm_core.presentation.viewmodels.BaseViewModel
 import com.dart69.mvvm_core.presentation.viewmodels.UiState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -24,7 +24,7 @@ internal data class FakeUiState(
     }
 }
 
-internal class FakeBaseViewModel : BaseViewModel<FakeUiState>(FakeUiState.INITIAL) {
+internal class FakeBaseViewModel : BaseViewModel.Default<FakeUiState>(FakeUiState.INITIAL) {
     fun updateTitle(newTitle: String) {
         uiStates.update { it.copy(title = newTitle) }
     }
@@ -45,11 +45,8 @@ internal class BaseViewModelTest {
         val expected = listOf(FakeUiState.INITIAL, FakeUiState.INITIAL.copy(title = newTitle))
         val actual = mutableListOf<FakeUiState>()
         val job = launch(UnconfinedTestDispatcher()) {
-            viewModel.collectUiStates {
+            viewModel.observeUiStates().take(expected.size).collect {
                 actual += it
-                if (actual.size == expected.size) {
-                    cancel()
-                }
             }
         }
         viewModel.updateTitle(newTitle)
