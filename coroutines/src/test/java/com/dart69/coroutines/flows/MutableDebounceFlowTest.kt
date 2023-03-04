@@ -12,7 +12,7 @@ import kotlin.test.assertEquals
 internal open class MutableDebounceFlowTest {
 
     protected open fun createFlow(timeOut: Long): MutableDebounceFlow<Int> =
-        MutableDebouncedFlow(timeOut = timeOut)
+        MutableDebounceFlow(timeOut = timeOut)
 
     @Test
     fun `an attempt to create a flow with the negative timOut throws IllegalArgumentException`() {
@@ -71,17 +71,5 @@ internal open class MutableDebounceFlowTest {
         }
         repeat(10, flow::emit)
         assertEquals(9, actual.await())
-    }
-}
-
-internal class MutableDebounceFlowWithInitialValueTest : MutableDebounceFlowTest() {
-    private val initial = 4440
-
-    override fun createFlow(timeOut: Long): MutableDebounceFlow<Int> =
-        MutableDebouncedFlow(initial = initial, timeOut = timeOut)
-
-    @Test
-    fun `initial value was emitted`() = runBlocking {
-        assertEquals(initial, createFlow(10L).first())
     }
 }
