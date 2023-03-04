@@ -1,8 +1,6 @@
 package com.dart69.coroutines.flows
 
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
 
 /**
  * A regular hot flow with timeout filtering applied on it.
@@ -22,46 +20,9 @@ interface MutableDebounceFlow<T> : DebounceFlow<T> {
      * @see kotlinx.coroutines.flow.debounce
      * */
     fun emit(value: T)
-
-    @OptIn(FlowPreview::class)
-    abstract class AbstractDebouncedFlow<T>(
-        private val timeOut: Long,
-    ) : MutableDebounceFlow<T> {
-        init {
-            if (timeOut < 0L) {
-                throw IllegalArgumentException("Timeout can't be < 0, actual is $timeOut")
-            }
-        }
-
-        protected abstract val trigger: MutableSharedFlow<T>
-
-        override suspend fun collect(collector: FlowCollector<T>) {
-            trigger
-                .distinctUntilChanged()
-                .debounce(timeOut)
-                .collect(collector)
-        }
-
-        override fun emit(value: T) {
-            trigger.tryEmit(value)
-        }
-    }
 }
 
 @Suppress("FunctionName", "NotConstructor")
-fun <T> MutableDebouncedFlow(
-    initial: T,
+fun <T> MutableDebounceFlow(
     timeOut: Long,
-): MutableDebounceFlow<T> = object : MutableDebounceFlow.AbstractDebouncedFlow<T>(timeOut) {
-    override val trigger: MutableStateFlow<T> = MutableStateFlow(initial)
-}
-
-@Suppress("FunctionName", "NotConstructor")
-fun <T> MutableDebouncedFlow(
-    timeOut: Long,
-): MutableDebounceFlow<T> = object : MutableDebounceFlow.AbstractDebouncedFlow<T>(timeOut) {
-    override val trigger: MutableSharedFlow<T> = MutableSharedFlow(
-        replay = 1,
-        onBufferOverflow = BufferOverflow.DROP_OLDEST,
-    )
-}
+): MutableDebounceFlow<T> = ForcedDebounceFlow.Default(timeOut = timeOut)
