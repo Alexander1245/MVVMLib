@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.*
 abstract class BaseViewModel<T : UiState> : ViewModel(), UiStateObserver<T> {
     protected abstract val uiStates: MutableStateFlow<T>
 
-    override suspend fun observeUiStates(): Flow<T> = uiStates.asStateFlow()
+    override  fun observeUiStates(): Flow<T> = uiStates.asStateFlow()
 
     abstract class Default<T : UiState>(initialState: T) : BaseViewModel<T>() {
         override val uiStates: MutableStateFlow<T> = MutableStateFlow(initialState)
@@ -18,7 +18,7 @@ abstract class CommunicatorViewModel<T : UiState, E : UiEvent> : BaseViewModel<T
     UiEventObserver<E> {
     protected abstract val uiEvents: Channel<E>
 
-    override suspend fun observeUiEvents(): Flow<E> =
+    override fun observeUiEvents(): Flow<E> =
         uiEvents.consumeAsFlow()
 
 
