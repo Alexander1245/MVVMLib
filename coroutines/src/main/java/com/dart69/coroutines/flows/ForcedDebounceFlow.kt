@@ -22,6 +22,7 @@ interface ForcedDebounceFlow<T> : MutableDebounceFlow<T> {
         private val result = trigger
             .debounce(timeOut)
             .filterNotNull()
+            .distinctUntilChanged()
             .map { it.data }
 
         override suspend fun collect(collector: FlowCollector<T>) =
