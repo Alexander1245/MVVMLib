@@ -71,7 +71,7 @@ dependencies {
 
     implementation "androidx.recyclerview:recyclerview:$RECYCLERVIEW_VERSION"
 
-    implementation project(":domain")
+    implementation "com.github.Alexander1245.MVVMLib:domain:${rootProject.version}"
 }
 
 afterEvaluate {
