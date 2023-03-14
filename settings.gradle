@@ -18,3 +18,4 @@ rootProject.name = "LibProject"
 include ':app'
 include ':coroutines'
 include ':mvvm-core'
+include ':domain'
